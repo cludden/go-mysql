@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/juju/errors"
-	. "github.com/siddontang/go-mysql/mysql"
+	. "github.com/cludden/go-mysql/mysql"
 )
 
 // Like mysqlbinlog remote raw backup
