@@ -1,4 +1,4 @@
 var
 bin
 .idea
-go
+vendor
