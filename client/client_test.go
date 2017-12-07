@@ -12,10 +12,10 @@ import (
 	"github.com/siddontang/go-mysql/mysql"
 )
 
-var testHost = flag.String("host", "127.0.0.1", "MySQL server host")
+var testHost = flag.String("host", "mysql", "MySQL server host")
 var testPort = flag.Int("port", 3306, "MySQL server port")
 var testUser = flag.String("user", "root", "MySQL user")
-var testPassword = flag.String("pass", "", "MySQL password")
+var testPassword = flag.String("pass", "s3cr3t", "MySQL password")
 var testDB = flag.String("db", "test", "MySQL test database")
 
 func Test(t *testing.T) {
