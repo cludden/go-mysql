@@ -5,11 +5,11 @@ import (
 	"regexp"
 	"time"
 
+	"github.com/cludden/go-mysql/mysql"
+	"github.com/cludden/go-mysql/replication"
+	"github.com/cludden/go-mysql/schema"
 	"github.com/juju/errors"
 	"github.com/satori/go.uuid"
-	"github.com/siddontang/go-mysql/mysql"
-	"github.com/siddontang/go-mysql/replication"
-	"github.com/siddontang/go-mysql/schema"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -123,11 +123,10 @@ func (c *Canal) runSyncBinlog() error {
 				if err = c.eventHandler.OnDDL(pos, e); err != nil {
 					return errors.Trace(err)
 				}
-			} else {
-				// skip others
-				continue
 			}
-
+			if err = c.eventHandler.OnQuery(e); err != nil {
+				return errors.Trace(err)
+			}
 		default:
 			continue
 		}

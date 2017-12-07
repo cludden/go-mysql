@@ -10,7 +10,7 @@ import (
 )
 
 // Use docker mysql to test, mysql is 3306
-var testHost = flag.String("host", "127.0.0.1", "MySQL master host")
+var testHost = flag.String("host", "mysql", "MySQL master host")
 
 func TestDriver(t *testing.T) {
 	TestingT(t)
@@ -23,7 +23,7 @@ type testDriverSuite struct {
 var _ = Suite(&testDriverSuite{})
 
 func (s *testDriverSuite) SetUpSuite(c *C) {
-	dsn := fmt.Sprintf("root@%s:3306?test", *testHost)
+	dsn := fmt.Sprintf("root:s3cr3t@%s:3306?test", *testHost)
 
 	var err error
 	s.db, err = sqlx.Open("mysql", dsn)

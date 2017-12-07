@@ -2,17 +2,14 @@ package canal
 
 import (
 	"bytes"
-	"flag"
 	"fmt"
 	"testing"
 	"time"
 
+	"github.com/cludden/go-mysql/mysql"
 	"github.com/juju/errors"
 	. "github.com/pingcap/check"
-	"github.com/siddontang/go-mysql/mysql"
 )
-
-var testHost = flag.String("host", "127.0.0.1", "MySQL host")
 
 func Test(t *testing.T) {
 	TestingT(t)
@@ -26,8 +23,9 @@ var _ = Suite(&canalTestSuite{})
 
 func (s *canalTestSuite) SetUpSuite(c *C) {
 	cfg := NewDefaultConfig()
-	cfg.Addr = fmt.Sprintf("%s:3306", *testHost)
+	cfg.Addr = "mysql:3306"
 	cfg.User = "root"
+	cfg.Password = "s3cr3t"
 	cfg.HeartbeatPeriod = 200 * time.Millisecond
 	cfg.ReadTimeout = 300 * time.Millisecond
 	cfg.Dump.ExecutionPath = "mysqldump"
