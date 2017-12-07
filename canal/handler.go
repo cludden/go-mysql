@@ -1,8 +1,8 @@
 package canal
 
 import (
-	"github.com/siddontang/go-mysql/mysql"
-	"github.com/siddontang/go-mysql/replication"
+	"github.com/cludden/go-mysql/mysql"
+	"github.com/cludden/go-mysql/replication"
 )
 
 type EventHandler interface {
@@ -13,6 +13,7 @@ type EventHandler interface {
 	OnGTID(gtid mysql.GTIDSet) error
 	// OnPosSynced Use your own way to sync position. When force is true, sync position immediately.
 	OnPosSynced(pos mysql.Position, force bool) error
+	OnQuery(queryEvent *replication.QueryEvent) error
 	String() string
 }
 
@@ -27,6 +28,7 @@ func (h *DummyEventHandler) OnRow(*RowsEvent) error                 { return nil
 func (h *DummyEventHandler) OnXID(mysql.Position) error             { return nil }
 func (h *DummyEventHandler) OnGTID(mysql.GTIDSet) error             { return nil }
 func (h *DummyEventHandler) OnPosSynced(mysql.Position, bool) error { return nil }
+func (h *DummyEventHandler) OnQuery(*replication.QueryEvent) error  { return nil }
 func (h *DummyEventHandler) String() string                         { return "DummyEventHandler" }
 
 // `SetEventHandler` registers the sync handler, you must register your

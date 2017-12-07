@@ -2,14 +2,13 @@ package canal
 
 import (
 	"bytes"
-	"flag"
 	"fmt"
 	"testing"
 	"time"
 
+	"github.com/cludden/go-mysql/mysql"
 	"github.com/juju/errors"
 	. "github.com/pingcap/check"
-	"github.com/siddontang/go-mysql/mysql"
 )
 
 func Test(t *testing.T) {
