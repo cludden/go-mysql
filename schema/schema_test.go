@@ -12,7 +12,7 @@ import (
 )
 
 // use docker mysql for test
-var host = flag.String("host", "127.0.0.1", "MySQL host")
+var host = flag.String("host", "mysql", "MySQL host")
 
 func Test(t *testing.T) {
 	TestingT(t)
@@ -27,10 +27,10 @@ var _ = Suite(&schemaTestSuite{})
 
 func (s *schemaTestSuite) SetUpSuite(c *C) {
 	var err error
-	s.conn, err = client.Connect(fmt.Sprintf("%s:%d", *host, 3306), "root", "", "test")
+	s.conn, err = client.Connect(fmt.Sprintf("%s:%d", *host, 3306), "root", "s3cr3t", "test")
 	c.Assert(err, IsNil)
 
-	s.sqlDB, err = sql.Open("mysql", fmt.Sprintf("root:@%s:3306", *host))
+	s.sqlDB, err = sql.Open("mysql", fmt.Sprintf("root:s3cr3t@%s:3306", *host))
 	c.Assert(err, IsNil)
 }
 
