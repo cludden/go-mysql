@@ -15,7 +15,7 @@ services:
       - mysql:mysql
     volumes:
       - ./:/go/src/github.com/cludden/go-mysql
-      - gomysqlvendor:/go/src/github.com/cludden/go-mysql/vendor
+      - /go/src/github.com/cludden/go-mysql/vendor
 
   # mysql container
   mysql:
@@ -33,4 +33,3 @@ services:
 
 volumes:
   gomysqldata:
-  gomysqlvendor:
