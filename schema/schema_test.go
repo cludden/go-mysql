@@ -2,8 +2,8 @@ package schema
 
 import (
 	"database/sql"
-	"flag"
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/cludden/go-mysql/client"
@@ -12,7 +12,11 @@ import (
 )
 
 // use docker mysql for test
-var host = flag.String("host", "mysql", "MySQL host")
+var testHost = os.Getenv("MYSQL_HOST")
+var testPort = os.Getenv("MYSQL_PORT")
+var testUser = os.Getenv("MYSQL_USER")
+var testPassword = os.Getenv("MYSQL_PASSWORD")
+var testDB = os.Getenv("MYSQL_DATABASE")
 
 func Test(t *testing.T) {
 	TestingT(t)
@@ -27,10 +31,10 @@ var _ = Suite(&schemaTestSuite{})
 
 func (s *schemaTestSuite) SetUpSuite(c *C) {
 	var err error
-	s.conn, err = client.Connect(fmt.Sprintf("%s:%d", *host, 3306), "root", "s3cr3t", "test")
+	s.conn, err = client.Connect(fmt.Sprintf("%s:%s", testHost, testPort), testUser, testPassword, testDB)
 	c.Assert(err, IsNil)
 
-	s.sqlDB, err = sql.Open("mysql", fmt.Sprintf("root:s3cr3t@%s:3306", *host))
+	s.sqlDB, err = sql.Open("mysql", fmt.Sprintf("%s:%s@%s:%s", testUser, testPassword, testHost, testPort))
 	c.Assert(err, IsNil)
 }
 

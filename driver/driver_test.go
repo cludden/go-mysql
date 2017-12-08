@@ -1,8 +1,8 @@
 package driver
 
 import (
-	"flag"
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/jmoiron/sqlx"
@@ -10,7 +10,11 @@ import (
 )
 
 // Use docker mysql to test, mysql is 3306
-var testHost = flag.String("host", "mysql", "MySQL master host")
+var testHost = os.Getenv("MYSQL_HOST")
+var testPort = os.Getenv("MYSQL_PORT")
+var testUser = os.Getenv("MYSQL_USER")
+var testPassword = os.Getenv("MYSQL_PASSWORD")
+var testDB = os.Getenv("MYSQL_DATABASE")
 
 func TestDriver(t *testing.T) {
 	TestingT(t)
@@ -23,7 +27,7 @@ type testDriverSuite struct {
 var _ = Suite(&testDriverSuite{})
 
 func (s *testDriverSuite) SetUpSuite(c *C) {
-	dsn := fmt.Sprintf("root:s3cr3t@%s:3306?test", *testHost)
+	dsn := fmt.Sprintf("%s:%s@%s:%s?%s", testUser, testPassword, testHost, testPort, testDB)
 
 	var err error
 	s.db, err = sqlx.Open("mysql", dsn)

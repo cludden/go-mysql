@@ -3,6 +3,7 @@ package canal
 import (
 	"bytes"
 	"fmt"
+	"os"
 	"testing"
 	"time"
 
@@ -20,12 +21,13 @@ type canalTestSuite struct {
 }
 
 var _ = Suite(&canalTestSuite{})
+var addr = fmt.Sprintf("%s:%s", os.Getenv("MYSQL_HOST"), os.Getenv("MYSQL_PORT"))
 
 func (s *canalTestSuite) SetUpSuite(c *C) {
 	cfg := NewDefaultConfig()
-	cfg.Addr = "mysql:3306"
-	cfg.User = "root"
-	cfg.Password = "s3cr3t"
+	cfg.Addr = addr
+	cfg.User = os.Getenv("MYSQL_USER")
+	cfg.Password = os.Getenv("MYSQL_PASSWORD")
 	cfg.HeartbeatPeriod = 200 * time.Millisecond
 	cfg.ReadTimeout = 300 * time.Millisecond
 	cfg.Dump.ExecutionPath = "mysqldump"

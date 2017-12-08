@@ -5,21 +5,27 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.test
+    environment:
+      MYSQL_DATABASE: test
+      MYSQL_HOST: mysql
+      MYSQL_PASSWORD: s3cr3t
+      MYSQL_PORT: 3306
+      MYSQL_USER: root
     links:
       - mysql:mysql
     volumes:
       - ./:/go/src/github.com/cludden/go-mysql
-      - vendor:/go/src/github.com/cludden/go-mysql/vendor
+      - gomysqlvendor:/go/src/github.com/cludden/go-mysql/vendor
 
   # mysql container
   mysql:
     image: mysql:5.7
     command: --server-id=1 --log-bin=/var/lib/mysql/mysql-bin.log --binlog-do-db=test --binlog-format=ROW
     environment:
-      MYSQL_USER: admin
-      MYSQL_PASSWORD: s3cr3t
       MYSQL_DATABASE: test
+      MYSQL_PASSWORD: s3cr3t
       MYSQL_ROOT_PASSWORD: s3cr3t
+      MYSQL_USER: admin
     ports:
       - 3306:3306
     volumes:
@@ -27,4 +33,4 @@ services:
 
 volumes:
   gomysqldata:
-  vendor:
+  gomysqlvendor:

@@ -2,8 +2,8 @@ package client
 
 import (
 	"crypto/tls"
-	"flag"
 	"fmt"
+	"os"
 	"strings"
 	"testing"
 
@@ -12,11 +12,11 @@ import (
 	"github.com/cludden/go-mysql/mysql"
 )
 
-var testHost = flag.String("host", "mysql", "MySQL server host")
-var testPort = flag.Int("port", 3306, "MySQL server port")
-var testUser = flag.String("user", "root", "MySQL user")
-var testPassword = flag.String("pass", "s3cr3t", "MySQL password")
-var testDB = flag.String("db", "test", "MySQL test database")
+var testHost = os.Getenv("MYSQL_HOST")
+var testPort = os.Getenv("MYSQL_PORT")
+var testUser = os.Getenv("MYSQL_USER")
+var testPassword = os.Getenv("MYSQL_PASSWORD")
+var testDB = os.Getenv("MYSQL_DATABASE")
 
 func Test(t *testing.T) {
 	TestingT(t)
@@ -30,8 +30,8 @@ var _ = Suite(&clientTestSuite{})
 
 func (s *clientTestSuite) SetUpSuite(c *C) {
 	var err error
-	addr := fmt.Sprintf("%s:%d", *testHost, *testPort)
-	s.c, err = Connect(addr, *testUser, *testPassword, *testDB)
+	addr := fmt.Sprintf("%s:%s", testHost, testPort)
+	s.c, err = Connect(addr, testUser, testPassword, testDB)
 	if err != nil {
 		c.Fatal(err)
 	}
@@ -81,8 +81,8 @@ func (s *clientTestSuite) TestConn_Ping(c *C) {
 func (s *clientTestSuite) TestConn_TLS(c *C) {
 	// Verify that the provided tls.Config is used when attempting to connect to mysql.
 	// An empty tls.Config will result in a connection error.
-	addr := fmt.Sprintf("%s:%d", *testHost, *testPort)
-	_, err := Connect(addr, *testUser, *testPassword, *testDB, func(c *Conn) {
+	addr := fmt.Sprintf("%s:%s", testHost, testPort)
+	_, err := Connect(addr, testUser, testPassword, testDB, func(c *Conn) {
 		c.TLSConfig = &tls.Config{}
 	})
 	if err == nil {
