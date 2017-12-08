@@ -4,10 +4,10 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/juju/errors"
 	"github.com/cludden/go-mysql/dump"
 	"github.com/cludden/go-mysql/mysql"
 	"github.com/cludden/go-mysql/schema"
+	"github.com/juju/errors"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -69,7 +69,7 @@ func (h *dumpParseHandler) Data(db string, table string, values []string) error 
 		}
 	}
 
-	events := newRowsEvent(tableInfo, InsertAction, [][]interface{}{vs})
+	events := newRowsEvent(tableInfo, InsertAction, [][]interface{}{vs}, nil)
 	return h.c.eventHandler.OnRow(events)
 }
 

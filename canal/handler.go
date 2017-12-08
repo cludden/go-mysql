@@ -13,7 +13,7 @@ type EventHandler interface {
 	OnGTID(gtid mysql.GTIDSet) error
 	// OnPosSynced Use your own way to sync position. When force is true, sync position immediately.
 	OnPosSynced(pos mysql.Position, force bool) error
-	OnQuery(queryEvent *replication.QueryEvent) error
+	OnQuery(*replication.QueryEvent) error
 	String() string
 }
 

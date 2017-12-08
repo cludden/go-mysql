@@ -3,8 +3,10 @@ package canal
 import (
 	"fmt"
 
-	"github.com/juju/errors"
+	"github.com/cludden/go-mysql/replication"
+
 	"github.com/cludden/go-mysql/schema"
+	"github.com/juju/errors"
 )
 
 const (
@@ -21,15 +23,17 @@ type RowsEvent struct {
 	// for v1 and v2, the rows number must be even.
 	// Two rows for one event, format is [before update row, after update row]
 	// for update v0, only one row for a event, and we don't support this version.
-	Rows [][]interface{}
+	Rows   [][]interface{}
+	Header *replication.EventHeader
 }
 
-func newRowsEvent(table *schema.Table, action string, rows [][]interface{}) *RowsEvent {
+func newRowsEvent(table *schema.Table, action string, rows [][]interface{}, h *replication.EventHeader) *RowsEvent {
 	e := new(RowsEvent)
 
 	e.Table = table
 	e.Action = action
 	e.Rows = rows
+	e.Header = h
 
 	return e
 }
