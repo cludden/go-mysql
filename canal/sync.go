@@ -124,9 +124,6 @@ func (c *Canal) runSyncBinlog() error {
 					return errors.Trace(err)
 				}
 			}
-			if err = c.eventHandler.OnQuery(e); err != nil {
-				return errors.Trace(err)
-			}
 		default:
 			continue
 		}
